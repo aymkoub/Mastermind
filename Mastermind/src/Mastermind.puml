@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package Controller{
+    class JeuController{
+        + genererCombinaisonSecrete(jeu : Jeu)
+        + genererIndices()
+        + verifierCombinaison()
+        + run()
+    }
+}
+
+package java.awt{
+    class Color
+}
+
+package Model{
+    class Jeu implements JeuObserver{
+        - combinaisonSecrete : Color[]
+    }
+
+    Jeu o-d->"*\n -couleurs" Color
+
+    interface JeuObserver{
+       + Update()
+    }
+}
+package View{
+    class JeuWindow extends JFrame implements Model.JeuObserver{
+
+    }
+}
+
+@enduml
