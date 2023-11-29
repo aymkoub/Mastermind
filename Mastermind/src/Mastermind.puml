@@ -20,11 +20,16 @@ package java.awt{
 }
 
 package Model{
-    class Jeu implements JeuObserver{
-        - combinaisonSecrete : Color[]
+    class Jeu {
+        - TentativeRestant : Integer
+        + addObserver(obs : JeuObserver)
+        + notifyObserver()
+        + getcombinaisonSecrete() : Color[]
+        + setCombainaionSecrete()
+        + getTentativeRestant() : Integer
     }
 
-    Jeu o-d->"*\n -couleurs" Color
+    Jeu o-d->"*\n -combinaisonSecrete" Color
 
     interface JeuObserver{
        + Update()
@@ -32,8 +37,22 @@ package Model{
 }
 package View{
     class JeuWindow extends JFrame implements Model.JeuObserver{
+        - jeu : Jeu
+        - jeuController : JeuController
+        + JeuWindow(jeu : Jeu, jeuController : JeuController)
+        + Update()
 
     }
 }
-
+class MasterMind
+{
+    main(args : String[])
+}
+View.JeuWindow o-> "1 \n controller"Controller.JeuController : > send
+View.JeuWindow o->"1 \n Jeu" Model.Jeu : > display
+MasterMind ..> View.JeuWindow : <<create>>
+MasterMind ..> Controller.JeuController : <<create>>
+MasterMind ..> Model.Jeu : <<create>>
+Model.Jeu "* \n observers" o-> Model.JeuObserver : < observe
+Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
 @enduml
