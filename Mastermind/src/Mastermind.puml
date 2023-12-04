@@ -11,7 +11,7 @@ package Controller{
         + JeuController(jeu : Manche)
         + genererCombinaisonSecrete(jeu : Manche)
         + genererIndices()
-        + verifierCombinaison()
+        + verifierCombinaison() : Boolean
         + run()
     }
 }
@@ -27,13 +27,15 @@ package Model{
         + Jeu()
     }
     class Manche {
-        - TentativeRestant : Integer    
+        - TentativeRestant : Integer
+        - tentative : Color[][]
         + Manche()
         + addObserver(obs : JeuObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
-        + setCombainaionSecrete()
+        + setCombainaionSecrete(combi : Color[])
         + getTentativeRestant() : Integer
+        + getTentative()
     }
 
     Manche o-d->"*\n -combinaisonSecrete" Color
@@ -49,6 +51,14 @@ package View{
         + JeuWindow(jeu : Manche, jeuController : JeuController)
         + Update()
 
+    }
+
+    class JeuTextuelle implements Model.JeuObserver
+    {
+        -manche : Manche
+        -jeuController : JeuController
+        +JeuTextuelle(jeu : Manche, jeuController : JeuController)
+        +Update()
     }
 }
 class MasterMind
