@@ -1,35 +1,25 @@
 package Model;
 
-import java.awt.*;
-import java.util.ArrayList;
+public class Jeu {
+    private int nbManches = 3;
+    private int nbPionsCombi = 4;
+    private int nbPionsTotal = 8;
+    private int nbTentatives = 10;
+    private int score = 0;
 
-public class Jeu{
-    private final Color[] combinaisonSecrete = new Color[4];
-    private int nbTentativesRestantes;
-
-    private ArrayList<JeuObserver> observers = new ArrayList<>();
-
-    public Color[] getCombinaisonSecrete() {
-        return combinaisonSecrete;
+    public int getNbManches() {
+        return nbManches;
     }
-
-    public void setCombinaisonSecrete(Color[] combinaison) {
-        for (int i = 0; i< combinaison.length; i++){
-            this.combinaisonSecrete[i] = combinaison[i];
-        }
+    public int getNbPionsCombi() {
+        return nbPionsCombi;
     }
-
-    public int getNbTentativesRestantes() {
-        return nbTentativesRestantes;
+    public int getNbPionsTotal() {
+        return nbPionsTotal;
     }
-
-    public void addObserver(JeuObserver obs){
-        observers.add(obs);
+    public int getNbTentatives() {
+        return nbTentatives;
     }
-
-    public void notifyObserver(){
-        for (JeuObserver obs : observers) {
-            obs.Update();
-        }
+    public int getScore() {
+        return score;
     }
 }

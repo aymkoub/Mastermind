@@ -1,5 +1,5 @@
 package Model;
 
-public interface JeuObserver {
+public interface MancheObserver {
     void Update();
 }
