@@ -7,13 +7,20 @@ skinparam style strictuml
 hide empty members
 
 package Controller{
-    class JeuController{
-        + genererCombinaisonSecrete(jeu : Jeu)
+    class MancheController{
+        + MancheController(manche : Manche)
+        + genererCombinaisonSecrete(manche : Manche)
         + genererIndices()
         + verifierCombinaison() : Boolean
         + notifierVictoire()
         + run()
     }
+
+    class JeuController{
+        + JeuController(jeu : Jeu)
+    }
+
+    class JeuPrintStrategy
 }
 
 package java.awt{
@@ -27,32 +34,46 @@ package Model{
         - nbPionsTotal : Integer
         - nbTentatives : Integer
         - score : Integer
+        + Jeu()
+        + getNbManches() : Integer
         + getNbPionsCombi() : Integer
         + getNbPionsTotal() : Integer
         + getNbTentatives() : Integer
         + getScore() : Integer
+        + setNbManches(nbManches : Integer)
+        + setNbPionsCombi(nbPionsCombi : Integer)
+        + setNbPionsTotal(nbPionsTotal : Integer)
+        + setNbTentatives(nbTentatives : Integer)
+        + addJeuObserver(obs : JeuObserver)
+        + notifyJeuObserver()
     }
     '''Jeu o--> "*\n-manches"Manche
     class Manche {
         - score : Integer
-        - tentativeRestant : Integer
+        - nbTentativesRestantes : Integer
+        + Manche()
         + addObserver(obs : JeuObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
         + setCombainaionSecrete()
         + getTentativeRestant() : Integer
+        + getScore() : Integer
+        + setNbTentativesRestantes(tentativesRestantes : Integer)
     }
 
-    Jeu o-d->"*\n -tabCouleurs" Color
+    Jeu o-d->"*\n -couleursPion" Color
     Manche o-d->"*\n -combinaisonSecrete" Color
 
+    interface JeuObserver{
+        + Update()
+    }
     interface MancheObserver{
        + Update()
     }
 }
 package View{
-    class JeuWindow extends JFrame implements Model.MancheObserver{
-        - manche : Manche
+    class JeuWindow extends JFrame implements Model.JeuObserver{
+        - jeu : Jeu
         - jeuController : JeuController
         + JeuWindow(jeu : Manche, jeuController : JeuController)
         + Update()
@@ -68,11 +89,14 @@ View.JeuWindow o->"1 \n Jeu" Model.Jeu : > display
 MasterMind ..> View.JeuWindow : <<create>>
 MasterMind ..> Controller.JeuController : <<create>>
 MasterMind ..> Model.Jeu : <<create>>
-Model.Manche "*\n observers" o-> Model.MancheObserver : < observe
+Model.Jeu "*\n jeuObservers" o-> Model.JeuObserver : < observe
+Model.Manche "*\n mancheObservers" o-> Model.MancheObserver : < observe
 Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
+Controller.MancheController o->"1 \n manche" Model.Manche : > modifie
 @enduml
 
 Evolutions de la conception :
 - utilisation de la classe Color de java.awt pour les couleurs des pions
 - création d'une classe Manche qui va faire ce qui était prévu pour la classe Jeu.
 - classe Jeu ne possédera que le score global et les différentes manches
+- utilisation de 2 interfaces Observer, 1 pour le Jeu et 1 pour les Manches

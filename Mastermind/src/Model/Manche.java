@@ -6,8 +6,9 @@ import java.util.ArrayList;
 public class Manche {
     private final Color[] combinaisonSecrete = new Color[4];
     private int nbTentativesRestantes;
+    private int score;
 
-    private ArrayList<MancheObserver> observers = new ArrayList<>();
+    private ArrayList<MancheObserver> mancheObservers = new ArrayList<>();
 
     public Color[] getCombinaisonSecrete() {
         return combinaisonSecrete;
@@ -24,11 +25,11 @@ public class Manche {
     }
 
     public void addObserver(MancheObserver obs){
-        observers.add(obs);
+        mancheObservers.add(obs);
     }
 
     public void notifyObserver(){
-        for (MancheObserver obs : observers) {
+        for (MancheObserver obs : mancheObservers) {
             obs.Update();
         }
     }
