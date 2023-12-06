@@ -10,7 +10,7 @@ import javax.swing.*;
 public class JeuWindow extends JFrame implements Model.MancheObserver  {
     private Manche jeu;
     private JeuController controller;
-    public JeuWindow(Manche jeu1, JeuController ctrl)
+    public JeuWindow(Jeu jeu1, JeuController ctrl)
     {
         this.jeu = jeu1;
         this.controller = ctrl;

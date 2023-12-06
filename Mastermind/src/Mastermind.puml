@@ -8,12 +8,19 @@ hide empty members
 
 package Controller{
     class JeuController{
+        - jeu : Jeu
         + JeuController(jeu : Manche)
+        + run()
+    }
+
+    class MancheController
+    {
+        - manche : Manche
+        + MancheController(manche : Manche)
         + genererCombinaisonSecrete(jeu : Manche)
         + genererIndices()
         + verifierCombinaison() : Boolean
         + notifierVictoire()
-        + run()
     }
 }
 
@@ -38,7 +45,7 @@ package Model{
     class Manche {
         - score : Integer
         - tentativeRestant : Integer
-        + addObserver(obs : JeuObserver)
+        + addObserver(obs : MancheObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
         + setCombainaionSecrete(combi : Color[])
@@ -63,7 +70,7 @@ package View{
 
     }
 
-    class JeuTextuelle implements Model.JeuObserver
+    class JeuTextuelle implements Model.MancheObserver
     {
         -manche : Manche
         -jeuController : JeuController
@@ -79,9 +86,11 @@ View.JeuWindow o-> "1 \n controller"Controller.JeuController : > send
 View.JeuWindow o->"1 \n Manche" Model.Manche : > display
 MasterMind ..> View.JeuWindow : <<create>>
 MasterMind ..> Controller.JeuController : <<create>>
-MasterMind ..> Model.Manche: <<create>>
-Model.Manche "* \n observers" o-> Model.JeuObserver : < observe
-Controller.JeuController o->"1 \n Manche" Model.Manche : > modifie
+MasterMind ..> Model.Jeu: <<create>>
+Controller.JeuController "*" ..> Controller.MancheController : <<create>>
+Model.Manche "* \n observers" o-> Model.MancheObserver : < observe
+Controller.MancheController o->"1 \n Manche" Model.Manche : > modifie
+Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
 @enduml
 
 Evolutions de la conception :
