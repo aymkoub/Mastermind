@@ -2,53 +2,35 @@ package Model;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Manche {
-    private int tentativeRestant;
-    private Color[] combinaison;
-    private Color[][] tentative;
-    private List<JeuObserver> observers;
-    public Manche()
-    {
-        this.tentativeRestant = 10;
-        this.observers = new ArrayList<>();
+    private final Color[] combinaisonSecrete = new Color[4];
+    private int nbTentativesRestantes;
+
+    private ArrayList<MancheObserver> observers = new ArrayList<>();
+
+    public Color[] getCombinaisonSecrete() {
+        return combinaisonSecrete;
     }
 
-    public Color[] getCombinaisonSecrete()
-    {
-        return this.combinaison;
-    }
-
-    public void setCombinaisonSecrete(Color[] combi)
-    {
-        this.combinaison = combi;
-    }
-
-    public int getTentativeRestant()
-    {
-        return this.tentativeRestant;
-    }
-
-    public Color[][] getTentative()
-    {
-        return this.tentative;
-    }
-
-    public void addObserver(JeuObserver obs)
-    {
-        this.observers.add(obs);
-    }   
-
-    protected void notifyObserver() {
-        for ( JeuObserver observer : observers ) {
-            observer.Update();
+    public void setCombinaisonSecrete(Color[] combinaison) {
+        for (int i = 0; i< combinaison.length; i++){
+            this.combinaisonSecrete[i] = combinaison[i];
         }
     }
 
-    public void NextTentative()
-    {
-
+    public int getNbTentativesRestantes() {
+        return nbTentativesRestantes;
     }
 
+    public void addObserver(MancheObserver obs){
+        observers.add(obs);
+    }
+
+    public void notifyObserver(){
+        for (MancheObserver obs : observers) {
+            obs.Update();
+        }
+    }
 }

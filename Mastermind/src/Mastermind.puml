@@ -12,6 +12,7 @@ package Controller{
         + genererCombinaisonSecrete(jeu : Manche)
         + genererIndices()
         + verifierCombinaison() : Boolean
+        + notifierVictoire()
         + run()
     }
 }
@@ -21,15 +22,22 @@ package java.awt{
 }
 
 package Model{
-    class Jeu
-    {
+
+    class Jeu{
+        - nbManches : Integer
+        - nbPionsCombi : Integer
+        - nbPionsTotal : Integer
+        - nbTentatives : Integer
         - score : Integer
-        + Jeu()
+        + getNbPionsCombi() : Integer
+        + getNbPionsTotal() : Integer
+        + getNbTentatives() : Integer
+        + getScore() : Integer
     }
+    '''Jeu o--> "*\n-manches"Manche
     class Manche {
-        - TentativeRestant : Integer
-        - tentative : Color[][]
-        + Manche()
+        - score : Integer
+        - tentativeRestant : Integer
         + addObserver(obs : JeuObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
@@ -38,15 +46,17 @@ package Model{
         + getTentative()
     }
 
+    Jeu o-d->"*\n -tabCouleurs" Color
     Manche o-d->"*\n -combinaisonSecrete" Color
 
-    interface JeuObserver{
+    interface MancheObserver{
        + Update()
     }
 }
 package View{
-    class JeuWindow extends JFrame implements Model.JeuObserver{
-        - jeu : Manche
+
+    class JeuWindow extends JFrame implements Model.MancheObserver{
+        - manche : Manche
         - jeuController : JeuController
         + JeuWindow(jeu : Manche, jeuController : JeuController)
         + Update()
@@ -73,3 +83,8 @@ MasterMind ..> Model.Manche: <<create>>
 Model.Manche "* \n observers" o-> Model.JeuObserver : < observe
 Controller.JeuController o->"1 \n Manche" Model.Manche : > modifie
 @enduml
+
+Evolutions de la conception :
+- utilisation de la classe Color de java.awt pour les couleurs des pions
+- création d'une classe Manche qui va faire ce qui était prévu pour la classe Jeu.
+- classe Jeu ne possédera que le score global et les différentes manches

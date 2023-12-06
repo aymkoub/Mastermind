@@ -7,7 +7,7 @@ import Model.Manche;
 
 import javax.swing.*;
 
-public class JeuWindow extends JFrame implements Model.JeuObserver  {
+public class JeuWindow extends JFrame implements Model.MancheObserver  {
     private Manche jeu;
     private JeuController controller;
     public JeuWindow(Manche jeu1, JeuController ctrl)

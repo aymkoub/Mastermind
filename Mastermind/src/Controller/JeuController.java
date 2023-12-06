@@ -1,31 +1,32 @@
 package Controller;
 
-import Model.Jeu;
+
 import Model.Manche;
 
 import java.awt.*;
 import java.util.Random;
 
 public class JeuController {
-    private Manche jeu;
+    private Manche manche;
     public JeuController(Manche jeu1)
     {
-        this.jeu = jeu1;
+        this.manche = jeu1;
     }
-    public void genererCombinaisonSecrete(Manche jeu){
+    public void genererCombinaisonSecrete(Manche manche){
         Color[] couleursPions = {Color.red, Color.pink, Color.yellow, Color.green, Color.orange, Color.blue,Color.magenta,Color.cyan};
         Color[] combinaison = new Color[4];
         Random rand = new Random();
         for (int i=0; i<4;i++){
             combinaison[i] = couleursPions[rand.nextInt(couleursPions.length)];
         }
-        jeu.setCombinaisonSecrete(combinaison);
+
+        manche.setCombinaisonSecrete(combinaison);
     }
 
     public boolean verifCombinaison(Color[] tentative)
     {
         boolean test = true;
-        Color[] combi = jeu.getCombinaisonSecrete();
+        Color[] combi = manche.getCombinaisonSecrete();
         for(int i = 0; i < tentative.length; i++)
         {
             if(tentative[i] != combi[i])
@@ -39,7 +40,7 @@ public class JeuController {
     public void run()
     {
         Color[] tentative = new Color[4];
-        while(!verifCombinaison(tentative) || jeu.getTentativeRestant() > 0)
+        while(!verifCombinaison(tentative) || manche.getNbTentativesRestantes() > 0)
         {
             
         }

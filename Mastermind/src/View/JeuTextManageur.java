@@ -4,7 +4,7 @@ import Controller.JeuController;
 import Model.Jeu;
 import Model.Manche;
 
-public class JeuTextManageur implements Model.JeuObserver{
+public class JeuTextManageur implements Model.MancheObserver{
     private Manche manche;
     private JeuController ctrl;
     public JeuTextManageur(Manche mc, JeuController jc)
