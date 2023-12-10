@@ -8,10 +8,19 @@ hide empty members
 
 package Controller{
     class JeuController{
-        + genererCombinaisonSecrete(jeu : Jeu)
-        + genererIndices()
-        + verifierCombinaison()
+        - jeu : Jeu
+        + JeuController(jeu : Manche)
         + run()
+    }
+
+    class MancheController
+    {
+        - manche : Manche
+        + MancheController(manche : Manche)
+        + genererCombinaisonSecrete(jeu : Manche)
+        + genererIndices()
+        + verifierCombinaison() : Boolean
+        + notifierVictoire()
     }
 }
 
@@ -20,28 +29,53 @@ package java.awt{
 }
 
 package Model{
-    class Jeu {
-        - TentativeRestant : Integer
-        + addObserver(obs : JeuObserver)
+
+    class Jeu{
+        - nbManches : Integer
+        - nbPionsCombi : Integer
+        - nbPionsTotal : Integer
+        - nbTentatives : Integer
+        - score : Integer
+        + getNbPionsCombi() : Integer
+        + getNbPionsTotal() : Integer
+        + getNbTentatives() : Integer
+        + getScore() : Integer
+    }
+    '''Jeu o--> "*\n-manches"Manche
+    class Manche {
+        - score : Integer
+        - tentativeRestant : Integer
+        + addObserver(obs : MancheObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
-        + setCombainaionSecrete()
+        + setCombainaionSecrete(combi : Color[])
         + getTentativeRestant() : Integer
+        + getTentative()
     }
 
-    Jeu o-d->"*\n -combinaisonSecrete" Color
+    Jeu o-d->"*\n -tabCouleurs" Color
+    Manche o-d->"*\n -combinaisonSecrete" Color
 
-    interface JeuObserver{
+    interface MancheObserver{
        + Update()
     }
 }
 package View{
-    class JeuWindow extends JFrame implements Model.JeuObserver{
-        - jeu : Jeu
+
+    class JeuWindow extends JFrame implements Model.MancheObserver{
+        - manche : Manche
         - jeuController : JeuController
-        + JeuWindow(jeu : Jeu, jeuController : JeuController)
+        + JeuWindow(jeu : Manche, jeuController : JeuController)
         + Update()
 
+    }
+
+    class JeuTextuelle implements Model.MancheObserver
+    {
+        -manche : Manche
+        -jeuController : JeuController
+        +JeuTextuelle(jeu : Manche, jeuController : JeuController)
+        +Update()
     }
 }
 class MasterMind
@@ -49,10 +83,17 @@ class MasterMind
     main(args : String[])
 }
 View.JeuWindow o-> "1 \n controller"Controller.JeuController : > send
-View.JeuWindow o->"1 \n Jeu" Model.Jeu : > display
+View.JeuWindow o->"1 \n Manche" Model.Manche : > display
 MasterMind ..> View.JeuWindow : <<create>>
 MasterMind ..> Controller.JeuController : <<create>>
-MasterMind ..> Model.Jeu : <<create>>
-Model.Jeu "* \n observers" o-> Model.JeuObserver : < observe
+MasterMind ..> Model.Jeu: <<create>>
+Controller.JeuController "*" ..> Controller.MancheController : <<create>>
+Model.Manche "* \n observers" o-> Model.MancheObserver : < observe
+Controller.MancheController o->"1 \n Manche" Model.Manche : > modifie
 Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
 @enduml
+
+Evolutions de la conception :
+- utilisation de la classe Color de java.awt pour les couleurs des pions
+- création d'une classe Manche qui va faire ce qui était prévu pour la classe Jeu.
+- classe Jeu ne possédera que le score global et les différentes manches
