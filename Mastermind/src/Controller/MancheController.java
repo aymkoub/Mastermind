@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.JeuPrintStrategy;
 import Model.Manche;
 
 import java.awt.*;
@@ -13,10 +14,10 @@ public class MancheController {
     }
     public void genererCombinaisonSecrete(Manche manche){
         Color[] couleursPions = {Color.red, Color.pink, Color.yellow, Color.green, Color.orange, Color.blue,Color.magenta,Color.cyan};
-        Color[] combinaison = new Color[4];
+        Color[] combinaison = new Color[manche.getPartie().getNbPionsCombi()];
         Random rand = new Random();
-        for (int i=0; i<4;i++){
-            combinaison[i] = couleursPions[rand.nextInt(couleursPions.length)];
+        for (int i=0; i< combinaison.length;i++){
+            combinaison[i] = couleursPions[rand.nextInt(0,couleursPions.length)];
         }
         manche.setCombinaisonSecrete(combinaison);
     }
@@ -35,6 +36,9 @@ public class MancheController {
         return test;
     }
 
+    public void genererIndices(JeuPrintStrategy contexte, Color[] tentative){
+        contexte.affichIndices(this.manche, tentative);
+    }
     public int calculScoreManche()
     {
         int score = 0;

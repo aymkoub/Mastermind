@@ -5,11 +5,20 @@ import java.util.ArrayList;
 
 
 public class Manche {
+    private Jeu partie;
     private final Color[] combinaisonSecrete = new Color[4];
     private int nbTentativesRestantes;
     private int score;
 
     private ArrayList<MancheObserver> mancheObservers = new ArrayList<>();
+
+    public Manche(Jeu partie){
+        this.partie = partie;
+    }
+
+    public Jeu getPartie() {
+        return this.partie;
+    }
 
     public Color[] getCombinaisonSecrete() {
         return combinaisonSecrete;
@@ -23,6 +32,18 @@ public class Manche {
 
     public int getNbTentativesRestantes() {
         return nbTentativesRestantes;
+    }
+
+    public void setNbTentativesRestantes(int nbTentativesRestantes) {
+        this.nbTentativesRestantes = nbTentativesRestantes;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void addObserver(MancheObserver obs){
