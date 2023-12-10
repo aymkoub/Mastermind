@@ -7,21 +7,21 @@ skinparam style strictuml
 hide empty members
 
 package Controller{
-    class MancheController{
+
+    class JeuController{
+        - jeu : Jeu
+        + JeuController(jeu : Jeu)
+        + run()
+    }
+
+    class MancheController
+    {
+        - manche : Manche
         + MancheController(manche : Manche)
         + genererCombinaisonSecrete(manche : Manche)
         + genererIndices()
         + verifierCombinaison() : Boolean
         + notifierVictoire()
-        + run()
-    }
-
-    class JeuController{
-        + JeuController(jeu : Jeu)
-    }
-
-    interface JeuPrintStrategy{
-        
     }
 }
 
@@ -30,6 +30,7 @@ package java.awt{
 }
 
 package Model{
+
     class Jeu{
         - nbManches : Integer
         - nbPionsCombi : Integer
@@ -54,10 +55,10 @@ package Model{
         - score : Integer
         - nbTentativesRestantes : Integer
         + Manche()
-        + addObserver(obs : JeuObserver)
+        + addObserver(obs : MancheObserver)
         + notifyObserver()
         + getcombinaisonSecrete() : Color[]
-        + setCombainaionSecrete()
+        + setCombainaionSecrete(combi : Color[])
         + getTentativeRestant() : Integer
         + getScore() : Integer
         + setNbTentativesRestantes(tentativesRestantes : Integer)
@@ -72,14 +73,26 @@ package Model{
     interface MancheObserver{
        + Update()
     }
+
+    interface JeuPrintStrategy{
+
+    }
 }
 package View{
     class JeuWindow extends JFrame implements Model.JeuObserver{
         - jeu : Jeu
         - jeuController : JeuController
-        + JeuWindow(jeu : Manche, jeuController : JeuController)
+        + JeuWindow(jeu : Jeu, jeuController : JeuController)
         + Update()
 
+    }
+
+    class JeuTextuelle implements Model.MancheObserver
+    {
+        -jeu : Jeu
+        -jeuController : JeuController
+        +JeuTextuelle(jeu : Jeu, jeuController : JeuController)
+        +Update()
     }
 }
 class MasterMind
@@ -87,12 +100,14 @@ class MasterMind
     main(args : String[])
 }
 View.JeuWindow o-> "1 \n controller"Controller.JeuController : > send
-View.JeuWindow o->"1 \n Jeu" Model.Jeu : > display
+View.JeuWindow o->"1 \n jeu" Model.Jeu : > display
 MasterMind ..> View.JeuWindow : <<create>>
 MasterMind ..> Controller.JeuController : <<create>>
 MasterMind ..> Model.Jeu : <<create>>
 Model.Jeu "*\n jeuObservers" o-> Model.JeuObserver : < observe
 Model.Manche "*\n mancheObservers" o-> Model.MancheObserver : < observe
+Controller.JeuController  ..> Controller.MancheController : <<create>>
+Controller.MancheController o->"1 \n Manche" Model.Manche : > modifie
 Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
 Controller.MancheController o->"1 \n manche" Model.Manche : > modifie
 @enduml

@@ -31,7 +31,6 @@ public class Jeu {
     public int getScore() {
         return score;
     }
-
     public void setNbManches(int nbManches) {
         this.nbManches = nbManches;
     }
@@ -47,12 +46,13 @@ public class Jeu {
     public void setNbTentatives(int nbTentatives) {
         this.nbTentatives = nbTentatives;
     }
+    public void setScore(int score){this.score += score;}
 
     public void addJeuObserver(JeuObserver obs){
         jeuObservers.add(obs);
     }
 
-    public void notifyJeuObserver(){
+    public void notifyJeuObserver() {
         for (JeuObserver obs : jeuObservers) {
             obs.Update();
         }

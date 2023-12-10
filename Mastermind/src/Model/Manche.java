@@ -3,6 +3,7 @@ package Model;
 import java.awt.*;
 import java.util.ArrayList;
 
+
 public class Manche {
     private final Color[] combinaisonSecrete = new Color[4];
     private int nbTentativesRestantes;
