@@ -7,19 +7,19 @@ skinparam style strictuml
 hide empty members
 
 package Controller{
+
     class JeuController{
         - jeu : Jeu
-        + JeuController(jeu : Manche)
+        + JeuController(jeu : Jeu)
         + run()
     }
 
     class MancheController
     {
-        - manche : Manche
         + MancheController(manche : Manche)
-        + genererCombinaisonSecrete(jeu : Manche)
-        + genererIndices()
-        + verifierCombinaison() : Boolean
+        + genererCombinaisonSecrete(manche : Manche)
+        + genererIndices(contexte : JeuPrintStrategy, tentative : Color[])
+        + verifierCombinaison(tentative : Color[]) : Boolean
         + notifierVictoire()
     }
 }
@@ -36,45 +36,78 @@ package Model{
         - nbPionsTotal : Integer
         - nbTentatives : Integer
         - score : Integer
+        + Jeu()
+        + getContexte() : JeuPrintStrategy
+        + getNbManches() : Integer
         + getNbPionsCombi() : Integer
         + getNbPionsTotal() : Integer
         + getNbTentatives() : Integer
         + getScore() : Integer
+        + setContexte(contexte : JeuPrintStrategy)
+        + setNbManches(nbManches : Integer)
+        + setNbPionsCombi(nbPionsCombi : Integer)
+        + setNbPionsTotal(nbPionsTotal : Integer)
+        + setNbTentatives(nbTentatives : Integer)
+        + addJeuObserver(obs : JeuObserver)
+        + notifyJeuObserver()
     }
-    '''Jeu o--> "*\n-manches"Manche
+    Manche o--> "1\n -partie" Jeu
     class Manche {
         - score : Integer
-        - tentativeRestant : Integer
+        - nbTentativesRestantes : Integer
+        + Manche(jeu : Jeu)
         + addObserver(obs : MancheObserver)
         + notifyObserver()
+        + getPartie() : Jeu
         + getcombinaisonSecrete() : Color[]
-        + setCombainaionSecrete(combi : Color[])
+        + setCombanaisonSecrete(combi : Color[])
         + getTentativeRestant() : Integer
-        + getTentative()
+        + getScore() : Integer
+        + setNbTentativesRestantes(tentativesRestantes : Integer)
+        + setScore(score : Integer)
     }
 
-    Jeu o-d->"*\n -tabCouleurs" Color
+    Jeu o-d->"*\n -couleursPion" Color
     Manche o-d->"*\n -combinaisonSecrete" Color
 
+    interface JeuObserver{
+        + Update()
+    }
     interface MancheObserver{
        + Update()
     }
+
+    interface JeuPrintStrategy{
+        + affichIndices(manche : Manche, tentative : Color[])
+    }
+
+    class EasyPrint implements JeuPrintStrategy{
+        + affichIndices(manche : Manche, tentative : Color[])
+    }
+    class ClassicPrint implements JeuPrintStrategy{
+        + affichIndices(manche : Manche, tentative : Color[])
+    }
+    class NumericPrint implements JeuPrintStrategy{
+        + affichIndices(manche : Manche, tentative : Color[])
+    }
+
+    Jeu "1\n -contexte" o-> JeuPrintStrategy
+
 }
 package View{
-
-    class JeuWindow extends JFrame implements Model.MancheObserver{
-        - manche : Manche
+    class JeuWindow extends JFrame implements Model.JeuObserver{
+        - jeu : Jeu
         - jeuController : JeuController
-        + JeuWindow(jeu : Manche, jeuController : JeuController)
+        + JeuWindow(jeu : Jeu, jeuController : JeuController)
         + Update()
 
     }
 
-    class JeuTextuelle implements Model.MancheObserver
+    class JeuTextuelle implements Model.JeuObserver
     {
-        -manche : Manche
+        -jeu : Jeu
         -jeuController : JeuController
-        +JeuTextuelle(jeu : Manche, jeuController : JeuController)
+        +JeuTextuelle(jeu : Jeu, jeuController : JeuController)
         +Update()
     }
 }
@@ -83,17 +116,15 @@ class MasterMind
     main(args : String[])
 }
 View.JeuWindow o-> "1 \n controller"Controller.JeuController : > send
-View.JeuWindow o->"1 \n Manche" Model.Manche : > display
+View.JeuWindow o->"1 \n jeu" Model.Jeu : > display
 MasterMind ..> View.JeuWindow : <<create>>
 MasterMind ..> Controller.JeuController : <<create>>
-MasterMind ..> Model.Jeu: <<create>>
-Controller.JeuController "*" ..> Controller.MancheController : <<create>>
-Model.Manche "* \n observers" o-> Model.MancheObserver : < observe
-Controller.MancheController o->"1 \n Manche" Model.Manche : > modifie
+MasterMind ..> Model.Jeu : <<create>>
+Model.Jeu "*\n jeuObservers" o-u-> Model.JeuObserver : < observe
+Model.Manche "*\n mancheObservers" o-> Model.MancheObserver : < observe
+Controller.JeuController  ..> Model.Manche : <<create>>
+Controller.JeuController  ..> Controller.MancheController : <<create>>
+Controller.MancheController o-u->"1 \n Manche" Model.Manche : > modifie
 Controller.JeuController o->"1 \n Jeu" Model.Jeu : > modifie
+Controller.MancheController o->"1 \n manche" Model.Manche : > modifie
 @enduml
-
-Evolutions de la conception :
-- utilisation de la classe Color de java.awt pour les couleurs des pions
-- création d'une classe Manche qui va faire ce qui était prévu pour la classe Jeu.
-- classe Jeu ne possédera que le score global et les différentes manches
