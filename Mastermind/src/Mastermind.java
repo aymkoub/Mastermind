@@ -8,6 +8,6 @@ public class Mastermind {
         Jeu jeu = new Jeu();
         JeuController jeuController = new JeuController(jeu);
         JeuWindow window = new JeuWindow(jeu, jeuController);
-        JeuTextManageur text = new JeuTextManageur(jeu, jeuController);
+        jeu.addJeuObserver(window);
     }
 }
