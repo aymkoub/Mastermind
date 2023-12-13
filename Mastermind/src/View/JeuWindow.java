@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Objects;
 
 public class JeuWindow extends JFrame implements Model.JeuObserver  {
-    private final Jeu jeu;
+    private Jeu jeu;
     private final JeuController controller;
     public JeuWindow(Jeu jeu1, JeuController ctrl)
     {
@@ -28,10 +28,11 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         this.getContentPane().removeAll();
         this.validate();
         this.repaint();
-        setSize(450, 1000);
+        setSize(600, 600);
         JButton start = new JButton("start");
-        start.addActionListener( actionEvent -> controller.run());
+        start.addActionListener( actionEvent -> game());
         start.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JButton option = new JButton("Option");
         option.addActionListener(actionEvent -> Option());
@@ -40,12 +41,23 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         JButton quitter = new JButton("Quitter le Jeu");
         quitter.addActionListener(actionEvent -> this.dispose());
         quitter.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        JLabel mastermind = new JLabel("MASTERMIND");
         JPanel panel = new JPanel();
-        panel.setLayout( new BoxLayout(panel,BoxLayout.Y_AXIS) );
-        panel.add(start);
-        panel.add(option);
-        panel.add(quitter);
+        panel.setLayout( new GridBagLayout() );
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(mastermind, constraints);
+        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        panel.add(start, constraints);
+        constraints.gridy = 3;
+        constraints.gridwidth = 2;
+        panel.add(option, constraints);
+        constraints.gridy = 5;
+        constraints.gridwidth = 2;
+        panel.add(quitter, constraints);
         setContentPane(panel);
     }
 
@@ -85,11 +97,11 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
 
         JButton enregister = new JButton("Enregistrer");
         enregister.addActionListener(actionEvent -> {
-            jeu.setNbManches(Integer.parseInt((String) Objects.requireNonNull(nbMancheCB.getSelectedItem())));
-            jeu.setNbPionsTotal(Integer.parseInt((String) Objects.requireNonNull(nbPionsDispoCB.getSelectedItem())));
-            jeu.setNbPionsCombi(Integer.parseInt((String) Objects.requireNonNull(nbPionsCombiCB.getSelectedItem())));
-            jeu.setNbTentatives(Integer.parseInt((String) Objects.requireNonNull(nbTentativeCB.getSelectedItem())));
-            jeu.setModeJeu((String)Objects.requireNonNull( mdAffichageCB.getSelectedItem()));
+            controller.setNbManches(Integer.parseInt((String) Objects.requireNonNull(nbMancheCB.getSelectedItem())));
+            controller.setNbPionsTotal(Integer.parseInt((String) Objects.requireNonNull(nbPionsDispoCB.getSelectedItem())));
+            controller.setNbPionsCombi(Integer.parseInt((String) Objects.requireNonNull(nbPionsCombiCB.getSelectedItem())));
+            controller.setNbTentatives(Integer.parseInt((String) Objects.requireNonNull(nbTentativeCB.getSelectedItem())));
+            controller.setModeJeu((String)Objects.requireNonNull( mdAffichageCB.getSelectedItem()));
             Menu();
         });
         JPanel panel = new JPanel();
@@ -108,6 +120,14 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         panel.add(enregister);
         setContentPane(panel);
         setVisible(true);
+    }
+
+    public void game()
+    {
+        this.getContentPane().removeAll();
+        this.validate();
+        this.repaint();
+        setSize(600, 1000);
     }
 
     @Override

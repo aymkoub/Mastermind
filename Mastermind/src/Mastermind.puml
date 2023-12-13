@@ -11,7 +11,10 @@ package Controller{
     class JeuController{
         - jeu : Jeu
         + JeuController(jeu : Jeu)
-        + run()
+        + setNbManches(nbManches : Integer)
+        + setNbPionsCombi(nbPionsCombi : Integer)
+        + setNbPionsTotal(nbPionsTotal : Integer)
+        + setNbTentatives(nbTentatives : Integer)
     }
 
     class MancheController
@@ -36,6 +39,7 @@ package Model{
         - nbPionsTotal : Integer
         - nbTentatives : Integer
         - score : Integer
+        -ModeJeu : String
         + Jeu()
         + getContexte() : JeuPrintStrategy
         + getNbManches() : Integer
@@ -43,11 +47,13 @@ package Model{
         + getNbPionsTotal() : Integer
         + getNbTentatives() : Integer
         + getScore() : Integer
+        + getModeJeu() : String
         + setContexte(contexte : JeuPrintStrategy)
         + setNbManches(nbManches : Integer)
         + setNbPionsCombi(nbPionsCombi : Integer)
         + setNbPionsTotal(nbPionsTotal : Integer)
         + setNbTentatives(nbTentatives : Integer)
+        + setModeJeu(md : String)
         + addJeuObserver(obs : JeuObserver)
         + notifyJeuObserver()
     }
@@ -99,6 +105,9 @@ package View{
         - jeu : Jeu
         - jeuController : JeuController
         + JeuWindow(jeu : Jeu, jeuController : JeuController)
+        + Menu()
+        + Option()
+        + game()
         + Update()
 
     }
