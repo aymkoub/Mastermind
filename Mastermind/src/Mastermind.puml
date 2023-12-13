@@ -52,6 +52,8 @@ package Model{
         + notifyJeuObserver()
     }
     Manche o--> "1\n -partie" Jeu
+    '''Jeu o-u-> "*\n -manches" Manche
+
     class Manche {
         - score : Integer
         - nbTentativesRestantes : Integer

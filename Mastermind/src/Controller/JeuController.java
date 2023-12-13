@@ -14,13 +14,4 @@ public class JeuController {
     {
         this.jeu = jeu1;
     }
-
-    public void run()
-    {
-        for(int i = 0; i < jeu.getNbManches(); i++)
-        {
-            Manche manche = new Manche(this.jeu);
-            MancheController mancheController = new MancheController(manche);
-        }
-    }
 }

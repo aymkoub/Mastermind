@@ -14,6 +14,7 @@ public class Manche {
 
     public Manche(Jeu partie){
         this.partie = partie;
+        nbTentativesRestantes = partie.getNbTentatives();
     }
 
     public Jeu getPartie() {
