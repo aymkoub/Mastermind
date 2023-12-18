@@ -2,17 +2,33 @@ package View;
 
 import Controller.JeuController;
 import Model.Jeu;
-import Model.Manche;
+
+import java.awt.*;
+import java.util.Scanner;
 
 public class JeuTextManageur implements Model.MancheObserver{
-    private Jeu manche;
+    private Jeu jeu;
     private JeuController ctrl;
-    public JeuTextManageur(Jeu mc, JeuController jc)
+    public JeuTextManageur(Jeu j, JeuController jc)
     {
-        this.manche = mc;
+        this.jeu = j;
         this.ctrl = jc;
     }
 
+    public void afficheCouleursText(String[] couleursDispo){
+        for (int i=0; i<couleursDispo.length; i++){
+            System.out.println(i + " : " + couleursDispo[i]);
+        }
+    }
+    public void choisirCouleur(Color[] couleursDispo, Color[] tentative, String[] tentaText, int index){
+        System.out.println("Saisir le numéro de la couleur choisie :");
+        Scanner sc = new Scanner(System.in);
+        int point = sc.nextInt();
+        Color choix = couleursDispo[point];
+        tentative[index] = choix;
+        tentaText[index] = jeu.getCouleursText()[point];
+
+    }
     @Override
     public void Update() {
 

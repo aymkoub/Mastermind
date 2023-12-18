@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Jeu {
     private Color[] couleursPions = {Color.red, Color.pink, Color.yellow, Color.green, Color.orange, Color.blue,Color.magenta,Color.cyan};
+    private String[] couleursText = {"Rouge","Rose","Jaune","Vert","Orange","Bleu","Violet","Cyan"};
     private int nbManches = 3;
     private int nbPionsCombi = 4;
     private int nbPionsTotal = 8;
@@ -12,10 +13,17 @@ public class Jeu {
     private int score = 0;
     private String modeJeu = "facile";
 
+    private JeuPrintStrategy contexte = new ClassicPrint();
     private ArrayList<JeuObserver> jeuObservers = new ArrayList<>();
 
+    public JeuPrintStrategy getContexte() {
+        return contexte;
+    }
     public Color[] getCouleursPions() {
         return couleursPions;
+    }
+    public String[] getCouleursText(){
+        return this.couleursText;
     }
     public int getNbManches() {
         return nbManches;
@@ -31,6 +39,10 @@ public class Jeu {
     }
     public int getScore() {
         return score;
+    }
+
+    public void setContexte(JeuPrintStrategy contexte) {
+        this.contexte = contexte;
     }
     public String getModeJeu() {return modeJeu;}
     public void setNbManches(int nbManches) {
