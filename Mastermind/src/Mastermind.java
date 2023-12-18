@@ -3,6 +3,7 @@ import Controller.MancheController;
 import Model.Jeu;
 import Model.Manche;
 import View.JeuTextManageur;
+import View.JeuWindow;
 
 import java.awt.*;
 
@@ -11,6 +12,7 @@ public class Mastermind {
         Jeu jeu = new Jeu();
         JeuController jeuController = new JeuController(jeu);
         JeuWindow window = new JeuWindow(jeu, jeuController);
+        JeuTextManageur text = new JeuTextManageur(jeu, jeuController);
         jeu.addJeuObserver(window);
 
         for(int i = 0; i < jeu.getNbManches(); i++)
@@ -34,8 +36,8 @@ public class Mastermind {
                 for (int j=0; j<jeu.getNbPionsCombi(); j++){
                     text.choisirCouleur(jeu.getCouleursPions(), tentative, tentext, j);
                 }
-                for (int m=0; m< tentext.length; m++){
-                    System.out.print(tentext[m] + " - ");
+                for (String s : tentext) {
+                    System.out.print(s + " - ");
                 }
                 System.out.println();
 

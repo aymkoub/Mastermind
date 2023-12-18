@@ -5,12 +5,16 @@ import Model.Jeu;
 
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class JeuWindow extends JFrame implements Model.JeuObserver  {
     private Jeu jeu;
     private final JeuController controller;
+    public Color couleurTemp;
     public JeuWindow(Jeu jeu1, JeuController ctrl)
     {
         this.jeu = jeu1;
@@ -120,14 +124,83 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         panel.add(enregister);
         setContentPane(panel);
         setVisible(true);
+
     }
 
     public void game()
     {
+        couleurTemp = Color.white;
+        Color[] couleur = jeu.getCouleursPions();
+
         this.getContentPane().removeAll();
         this.validate();
         this.repaint();
         setSize(600, 1000);
+//        JPanel panel1 = new JPanel();
+//        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0,1));
+        for(int i = 0; i < jeu.getNbTentatives(); i++)
+        {
+            JPanel panel2 = new JPanel();
+            panel2.setLayout(new FlowLayout());
+
+            for(int j = 0; j < jeu.getNbPionsCombi(); j++)
+            {
+                JLabel boul = new JLabel();
+                boul.setPreferredSize(new Dimension(50, 50));
+                boul.setBackground(Color.white);
+                Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+                boul.setBorder(border);
+                boul.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                boul.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        boul.setBackground(couleurTemp);
+                        boul.setOpaque(true);
+                    }
+                });
+                panel2.add(boul);
+
+            }
+            for(int k = 0; k < jeu.getNbPionsCombi();k++)
+            {
+                JLabel indice = new JLabel();
+                indice.setPreferredSize(new Dimension(25,25));
+                indice.setBackground(Color.white);
+                Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+                indice.setBorder(border);
+                panel2.add(indice);
+            }
+            panel.add(panel2);
+            //panel1.add(panel2);
+
+
+        }
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new FlowLayout());
+        for(int m = 0; m < jeu.getNbPionsTotal(); m++)
+        {
+            JLabel boul = new JLabel();
+            boul.setPreferredSize(new Dimension(50, 50));
+            boul.setOpaque(true);
+            boul.setBackground(couleur[m]);
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+            boul.setBorder(border);
+            boul.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            boul.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    couleurTemp = boul.getBackground();
+                }
+            });
+            panel2.add(boul);
+        }
+        panel.add(panel2);
+        setContentPane(panel);
+        setVisible(true);
+
+
     }
 
     @Override
