@@ -2,6 +2,7 @@ package View;
 
 import Controller.JeuController;
 import Model.Jeu;
+import Model.Tentative;
 
 import java.awt.*;
 import java.util.Scanner;
@@ -20,12 +21,12 @@ public class JeuTextManageur implements Model.MancheObserver{
             System.out.println(i + " : " + couleursDispo[i]);
         }
     }
-    public void choisirCouleur(Color[] couleursDispo, Color[] tentative, String[] tentaText, int index){
+    public void choisirCouleur(Color[] couleursDispo, Tentative tentative, String[] tentaText, int index){
         System.out.println("Saisir le numéro de la couleur choisie :");
         Scanner sc = new Scanner(System.in);
         int point = sc.nextInt();
         Color choix = couleursDispo[point];
-        tentative[index] = choix;
+        tentative.getCombinaisonTentee()[index] = choix;
         tentaText[index] = jeu.getCouleursText()[point];
 
     }

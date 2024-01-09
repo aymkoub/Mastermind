@@ -18,9 +18,9 @@ package Controller{
     {
         + MancheController(manche : Manche)
         + genererCombinaisonSecrete(manche : Manche)
-        + genererIndices(contexte : JeuPrintStrategy, tentative : Color[])
-        + verifierCombinaison(tentative : Color[]) : Boolean
-        + notifierVictoire()
+        + genererIndices(contexte : JeuPrintStrategy, tentative : Tentative)
+        + verifierCombinaison(tentative : Tentative) : Boolean
+        + calculerScore(tentative : Tentative)
     }
 }
 
@@ -63,14 +63,34 @@ package Model{
         + getPartie() : Jeu
         + getcombinaisonSecrete() : Color[]
         + setCombanaisonSecrete(combi : Color[])
-        + getTentativeRestant() : Integer
+        + getNbTentativesRestantes() : Integer
         + getScore() : Integer
         + setNbTentativesRestantes(tentativesRestantes : Integer)
         + setScore(score : Integer)
     }
-
     Jeu o-d->"*\n -couleursPion" Color
     Manche o-d->"*\n -combinaisonSecrete" Color
+
+    class Tentative{
+        -nbAbs : Integer
+        -nbFaux : Integer
+        -nbVrais : Integer
+        +Tentative(manche : Manche)
+        +getCombinaisonTentee() : Color[]
+        +getIndicesTentative() : Color[]
+        +getAbs() : Integer
+        +getFaux() : Integer
+        +getVrais() : Integer
+        +setCombinaisonTentee() : Color[]
+        +setIndicesTentative() : Color[]
+        +setAbs()
+        +setFaux
+        +setVrais
+    }
+    Tentative o-d->"*\n -combinaisonTentee" Color
+    Tentative o-d->"*\n -indicesTentative" Color
+
+    Manche o-d-> "*\n -tentatives" Tentative : > possède
 
     interface JeuObserver{
         + Update()
@@ -80,17 +100,17 @@ package Model{
     }
 
     interface JeuPrintStrategy{
-        + affichIndices(manche : Manche, tentative : Color[])
+        + affichIndices(manche : Manche, tentative : Tentative)
     }
 
     class EasyPrint implements JeuPrintStrategy{
-        + affichIndices(manche : Manche, tentative : Color[])
+        + affichIndices(manche : Manche, tentative : Tentative)
     }
     class ClassicPrint implements JeuPrintStrategy{
-        + affichIndices(manche : Manche, tentative : Color[])
+        + affichIndices(manche : Manche, tentative : Tentative)
     }
     class NumericPrint implements JeuPrintStrategy{
-        + affichIndices(manche : Manche, tentative : Color[])
+        + affichIndices(manche : Manche, tentative : Tentative)
     }
 
     Jeu "1\n -contexte" o-> JeuPrintStrategy
@@ -102,7 +122,6 @@ package View{
         - jeuController : JeuController
         + JeuWindow(jeu : Jeu, jeuController : JeuController)
         + Update()
-
     }
 
     class JeuTextuelle implements Model.JeuObserver
