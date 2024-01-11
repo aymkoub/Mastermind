@@ -6,6 +6,7 @@ import Model.Manche;
 import Model.Tentative;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MancheController {
@@ -42,6 +43,8 @@ public class MancheController {
         contexte.genererIndices(this.manche, tentative);
         contexte.affichIndices(tentative);
     }
+
+
     public void calculerScoreManche(Tentative tentative)
     {
         int score = manche.getNbTentativesRestantes()*(tentative.getNbVrais()*3 + tentative.getNbFaux() + tentative.getNbAbs());

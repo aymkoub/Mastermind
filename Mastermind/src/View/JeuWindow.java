@@ -5,6 +5,7 @@ import Controller.MancheController;
 import Model.Jeu;
 import Model.Manche;
 import Model.Tentative;
+import Model.WindowPrint;
 
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
     private final JeuController controller;
     public Color couleurTemp;
     private int nbTentativeEffectuer = 0;
+    private int nbMancheJouer = 0;
     public JeuWindow(Jeu jeu1, JeuController ctrl)
     {
         this.jeu = jeu1;
@@ -136,6 +138,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
     public void game()
     {
         this.manche = new Manche(jeu);
+        this.nbMancheJouer++;
         this.mancheController = new MancheController(manche);
         this.mancheController.genererCombinaisonSecrete(manche);
         couleurTemp = Color.white;
@@ -207,6 +210,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         }
         panel.add(panel2);
         JButton btn = new JButton("Valider Tentative");
+        btn.addActionListener( actionEvent -> ValiderTentative(panel));
         panel.add(btn);
         setContentPane(panel);
         setVisible(true);
@@ -215,6 +219,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
     }
 
     public void ValiderTentative(Container Mainpanel)  {
+
         this.nbTentativeEffectuer++;
         int index = jeu.getNbTentatives() - this.nbTentativeEffectuer;
         Component[] components = Mainpanel.getComponents();
@@ -234,6 +239,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
             Component cpn = components2[i];
             if(cpn instanceof JLabel)
             {
+
                 labelList.add((JLabel) cpn);
             }
         }
@@ -242,16 +248,41 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         for(int j = 0; j < labelList.size(); j++)
         {
             combiTente[j] = labelList.get(j).getBackground();
+
         }
 
         ttt.setCombinaisonTentee(combiTente);
-        if(mancheController.verifCombinaison(ttt))
+        if(mancheController.verifCombinaison(ttt) || nbTentativeEffectuer >= jeu.getNbTentatives())
         {
-            Fin();
+            if(this.nbMancheJouer < jeu.getNbManches())
+            {
+                this.mancheController.calculerScoreManche(ttt);
+                game();
+            }
+            else
+            {
+                this.mancheController.calculerScoreManche(ttt);
+                Fin();
+            }
         }
         else
         {
-            mancheController.genererIndices(,ttt);
+            mancheController.genererIndices(new WindowPrint(), ttt);
+            ArrayList<JLabel> labelIndiceList = new ArrayList<>();
+            for(int i = jeu.getNbPionsCombi(); i < components2.length; i++)
+            {
+                Component cpn = components2[i];
+                if(cpn instanceof JLabel)
+                {
+                    labelIndiceList.add((JLabel) cpn);
+                }
+            }
+            for(int k = 0; k < jeu.getNbPionsCombi(); k++)
+            {
+                System.out.println(ttt.getIndicesTentative()[k].toString());
+                labelIndiceList.get(k).setBackground(ttt.getIndicesTentative()[k]);
+                labelIndiceList.get(k).setOpaque(true);
+            }
         }
     }
 
@@ -261,7 +292,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         this.getContentPane().removeAll();
         this.validate();
         this.repaint();
-        JLabel lbl = new JLabel("fin");
+        JLabel lbl = new JLabel( "fin");
         this.add(lbl);
     }
 
