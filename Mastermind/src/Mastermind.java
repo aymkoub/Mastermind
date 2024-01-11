@@ -2,6 +2,7 @@ import Controller.JeuController;
 import Controller.MancheController;
 import Model.Jeu;
 import Model.Manche;
+import Model.Tentative;
 import View.JeuTextManageur;
 import View.JeuWindow;
 
@@ -25,11 +26,11 @@ public class Mastermind {
             mancheController.genererCombinaisonSecrete(manche);
 
             // Série de tentatives
-            for (int k= manche.getNbTentativesRestantes(); k>0; k--){
+            Tentative tentative = new Tentative(manche);
+            String[] tentext = new String[jeu.getNbPionsCombi()];
+            boolean victoire = false;
+            for (int k= manche.getNbTentativesRestantes(); k>0 && !victoire; k--){
                 System.out.println("Il vous reste " + k + " tentatives.");
-
-                Color[] tentative = new Color[jeu.getNbPionsCombi()];
-                String[] tentext = new String[jeu.getNbPionsCombi()];
 
                 // L'utilisateur choisit les couleurs de la tentative
                 text.afficheCouleursText(jeu.getCouleursText());
@@ -44,11 +45,16 @@ public class Mastermind {
                 //Vérification de la tentative et génération des indices si nécessaire
                 if (mancheController.verifCombinaison(tentative)){
                     System.out.println("Combinaison trouvée ! Vous avez gagné la manche");
+                    victoire = true;
                 }
                 else{
                     mancheController.genererIndices(jeu.getContexte(), tentative);
                 }
             }
+            //calcul du score
+            mancheController.calculerScoreManche(tentative);
+            jeu.setScore(manche.getScore());
+            System.out.println("Vous avez gagné " + manche.getScore() + " points sur cette manche !");
         }
     }
 }
