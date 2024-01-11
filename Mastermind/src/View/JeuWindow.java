@@ -1,7 +1,10 @@
 package View;
 
 import Controller.JeuController;
+import Controller.MancheController;
 import Model.Jeu;
+import Model.Manche;
+import Model.Tentative;
 
 
 import javax.swing.*;
@@ -9,12 +12,14 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class JeuWindow extends JFrame implements Model.JeuObserver  {
     private Jeu jeu;
     private final JeuController controller;
     public Color couleurTemp;
+    private int nbTentativeEffectuer = 0;
     public JeuWindow(Jeu jeu1, JeuController ctrl)
     {
         this.jeu = jeu1;
@@ -126,9 +131,13 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         setVisible(true);
 
     }
-
+    private Manche manche;
+    private MancheController mancheController;
     public void game()
     {
+        this.manche = new Manche(jeu);
+        this.mancheController = new MancheController(manche);
+        this.mancheController.genererCombinaisonSecrete(manche);
         couleurTemp = Color.white;
         Color[] couleur = jeu.getCouleursPions();
 
@@ -197,10 +206,63 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
             panel2.add(boul);
         }
         panel.add(panel2);
+        JButton btn = new JButton("Valider Tentative");
+        panel.add(btn);
         setContentPane(panel);
         setVisible(true);
 
 
+    }
+
+    public void ValiderTentative(Container Mainpanel)  {
+        this.nbTentativeEffectuer++;
+        int index = jeu.getNbTentatives() - this.nbTentativeEffectuer;
+        Component[] components = Mainpanel.getComponents();
+        JPanel panelTentative;
+        if (index >= 0 && index < components.length && components[index] instanceof JPanel) {
+            panelTentative =  (JPanel) components[index];
+        }
+        else
+        {
+            panelTentative = new JPanel();
+        }
+        //on recup les labels (boules) du panel de la tentative
+        ArrayList<JLabel> labelList = new ArrayList<>();
+        Component[] components2 = panelTentative.getComponents();
+        for(int i = 0; i < jeu.getNbPionsCombi(); i++)
+        {
+            Component cpn = components2[i];
+            if(cpn instanceof JLabel)
+            {
+                labelList.add((JLabel) cpn);
+            }
+        }
+        Tentative ttt = new Tentative(manche);
+        Color[] combiTente = new Color[jeu.getNbPionsCombi()];
+        for(int j = 0; j < labelList.size(); j++)
+        {
+            combiTente[j] = labelList.get(j).getBackground();
+        }
+
+        ttt.setCombinaisonTentee(combiTente);
+        if(mancheController.verifCombinaison(ttt))
+        {
+            Fin();
+        }
+        else
+        {
+            mancheController.genererIndices(,ttt);
+        }
+    }
+
+    public void Fin()
+    {
+        setSize(700,700);
+        this.getContentPane().removeAll();
+        this.validate();
+        this.repaint();
+        JLabel lbl = new JLabel("fin");
+        this.add(lbl);
     }
 
     @Override

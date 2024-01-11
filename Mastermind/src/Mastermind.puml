@@ -126,11 +126,13 @@ package View{
     class JeuWindow extends JFrame implements Model.JeuObserver{
         - jeu : Jeu
         - jeuController : JeuController
+        - nbTentativeEffectuer : Integer
         + JeuWindow(jeu : Jeu, jeuController : JeuController)
         + Menu()
         + Option()
         + game()
         + Update()
+        + ValiderTentative(Container Mainpanel)
     }
 
     class JeuTextuelle implements Model.JeuObserver
