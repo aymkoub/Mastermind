@@ -174,7 +174,6 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
                 panel2.add(boul);
 
             }
-            System.out.println(jeu.getModeJeu());
             if(jeu.getModeJeu().equals("Classique") || jeu.getModeJeu().equals("Facile")) {
                 for (int k = 0; k < jeu.getNbPionsCombi(); k++) {
                     JLabel indice = new JLabel();
