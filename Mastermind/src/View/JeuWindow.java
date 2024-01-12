@@ -92,9 +92,9 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         nbPionsCombiCB.setSelectedIndex(2);
 
         JLabel nbTentative = new JLabel("Nombre de tentatives");
-        String[] nbTentativeList = {"10","11","12"};
+        String[] nbTentativeList = {"2","3","4","5","6","7","8","9","10","11","12"};
         JComboBox nbTentativeCB = new JComboBox(nbTentativeList);
-        nbTentativeCB.setSelectedIndex(0);
+        nbTentativeCB.setSelectedIndex(8);
 
         JLabel mdAffichage = new JLabel("Mode d'affichage des indices");
         String[] mdAffichageList = {"classique", "facile", "numérique"};
@@ -285,13 +285,13 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
                 this.mancheController.calculerScoreManche(ttt);
                 controller.setScore(manche.getScore());
                 nbTentativeEffectuer = 0;
-                game();
+                FinMache();
             }
             else
             {
                 this.mancheController.calculerScoreManche(ttt);
                 controller.setScore(manche.getScore());
-                Fin();
+                FinMache();
             }
         }
         else
@@ -347,11 +347,11 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         if(nbMancheJouer < jeu.getNbManches())
         {
             nbTentativeEffectuer = 0;
-            game();
+            FinMache();
         }
         else
         {
-            Fin();
+            FinMache();
         }
     }
 
@@ -393,6 +393,46 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         nbTentativeEffectuer = 0;
         Menu();
 
+    }
+
+    public void FinMache()
+    {
+        setSize(700,700);
+        this.getContentPane().removeAll();
+        this.validate();
+        this.repaint();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0,1));
+        JLabel lbl = new JLabel("La combinaison était");
+        panel.add(lbl);
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new FlowLayout());
+        for (int i = 0; i < jeu.getNbPionsCombi(); i++) {
+            JLabel indice = new JLabel();
+            indice.setPreferredSize(new Dimension(50, 50));
+            indice.setBackground(manche.getCombinaisonSecrete()[i]);
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+            indice.setBorder(border);
+            indice.setOpaque(true);
+            panel1.add(indice);
+        }
+        panel.add(panel1);
+        JLabel lbl2 = new JLabel("Votre score sur cette manche est " + manche.getScore() );
+        panel.add(lbl2);
+
+        JButton btn = new JButton("Suivant");
+        btn.addActionListener(actionEvent -> {
+        if(this.nbMancheJouer < jeu.getNbManches())
+        {
+            game();
+        }
+        else {
+            Fin();
+        }}
+        );
+        panel.add(btn);
+        setContentPane(panel);
+        setVisible(true);
     }
     @Override
     public void Update() {
