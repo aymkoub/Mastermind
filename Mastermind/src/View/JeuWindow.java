@@ -336,7 +336,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
                         labelIndiceList.add((JLabel) cpn);
                     }
                 }
-                labelIndiceList.getFirst().setText(String.valueOf(trouve));
+                labelIndiceList.get(0).setText(String.valueOf(trouve));
                 labelIndiceList.get(1).setText(String.valueOf(malPlacer));
             }
         }
