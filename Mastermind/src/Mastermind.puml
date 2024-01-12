@@ -141,6 +141,7 @@ package View{
         + StopManche()
         + Fin()
         + Relancer()
+        + FinMache()
     }
 
     class JeuTextuelle implements Model.JeuObserver
