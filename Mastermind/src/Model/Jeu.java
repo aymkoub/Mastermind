@@ -11,7 +11,7 @@ public class Jeu {
     private int nbPionsTotal = 8;
     private int nbTentatives = 10;
     private int score = 0;
-    private String modeJeu = "facile";
+    private String modeJeu = "Classique";
 
     private JeuPrintStrategy contexte = new ClassicPrint();
     private ArrayList<JeuObserver> jeuObservers = new ArrayList<>();

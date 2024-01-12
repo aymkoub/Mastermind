@@ -37,12 +37,12 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         this.validate();
         this.repaint();
         setSize(600, 600);
-        JButton start = new JButton("start");
+        JButton start = new JButton("Start");
         start.addActionListener( actionEvent -> game());
         start.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-        JButton option = new JButton("Option");
+        JButton option = new JButton("Options");
         option.addActionListener(actionEvent -> Option());
         option.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -76,7 +76,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         this.validate();
         this.repaint();
 
-        JLabel nbMan = new JLabel("Nombre de manche");
+        JLabel nbMan = new JLabel("Nombre de manches");
         String[] nbManche = {"1","2","3", "4", "5"};
         JComboBox nbMancheCB = new JComboBox(nbManche);
         nbMancheCB.setSelectedIndex(2);
@@ -97,7 +97,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         nbTentativeCB.setSelectedIndex(8);
 
         JLabel mdAffichage = new JLabel("Mode d'affichage des indices");
-        String[] mdAffichageList = {"classique", "facile", "numérique"};
+        String[] mdAffichageList = {"Classique", "Facile", "Numérique"};
         JComboBox mdAffichageCB = new JComboBox(mdAffichageList);
         mdAffichageCB.setSelectedIndex(0);
 
@@ -145,8 +145,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         this.validate();
         this.repaint();
         setSize(600, 1000);
-//        JPanel panel1 = new JPanel();
-//        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0,1));
         for(int i = 0; i < jeu.getNbTentatives(); i++)
@@ -175,7 +174,8 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
                 panel2.add(boul);
 
             }
-            if(jeu.getModeJeu().equals("classique") || jeu.getModeJeu().equals("facile")) {
+            System.out.println(jeu.getModeJeu());
+            if(jeu.getModeJeu().equals("Classique") || jeu.getModeJeu().equals("Facile")) {
                 for (int k = 0; k < jeu.getNbPionsCombi(); k++) {
                     JLabel indice = new JLabel();
                     indice.setPreferredSize(new Dimension(25, 25));
@@ -246,7 +246,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         {
             panelTentative = new JPanel();
         }
-        //on recup les labels (boules) du panel de la tentative
+        //on récupère les labels (boules) du panel de la tentative
         ArrayList<JLabel> labelList = new ArrayList<>();
         Component[] components2 = panelTentative.getComponents();
         for(int i = 0; i < jeu.getNbPionsCombi(); i++)
@@ -270,9 +270,9 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         if(mancheController.verifCombinaison(ttt) || nbTentativeEffectuer >= jeu.getNbTentatives())
         {
             //On genere les indices pour le calcule de score
-            if (jeu.getModeJeu().equals("classique")) {
+            if (jeu.getModeJeu().equals("Classique")) {
                 mancheController.genererIndices(new ClassicPrint(), ttt);
-            } else if (jeu.getModeJeu().equals("facile")) {
+            } else if (jeu.getModeJeu().equals("Facile")) {
                 mancheController.genererIndices(new EasyPrint(), ttt);
             }
             else
@@ -296,10 +296,10 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
         }
         else
         {
-            if(jeu.getModeJeu().equals("classique") || jeu.getModeJeu().equals("facile")) {
-                if (jeu.getModeJeu().equals("classique")) {
+            if(jeu.getModeJeu().equals("Classique") || jeu.getModeJeu().equals("Facile")) {
+                if (jeu.getModeJeu().equals("Classique")) {
                     mancheController.genererIndices(new ClassicPrint(), ttt);
-                } else if (jeu.getModeJeu().equals("facile")) {
+                } else if (jeu.getModeJeu().equals("Facile")) {
                     mancheController.genererIndices(new EasyPrint(), ttt);
                 }
                 ArrayList<JLabel> labelIndiceList = new ArrayList<>();
@@ -376,7 +376,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
             Titre.setText("Perdu");
         }
 
-        JLabel Score = new JLabel("Votre score : {jeu.getScore()}");
+        JLabel Score = new JLabel("Votre score : "+jeu.getScore());
         panel.add(Score);
         panel.add(Titre);
         JButton Menu = new JButton("Menu");

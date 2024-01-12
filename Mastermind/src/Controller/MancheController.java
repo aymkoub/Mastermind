@@ -20,7 +20,7 @@ public class MancheController {
         Color[] combinaison = new Color[manche.getPartie().getNbPionsCombi()];
         Random rand = new Random();
         for (int i=0; i< combinaison.length;i++){
-            combinaison[i] = couleursPions[rand.nextInt(0,couleursPions.length)];
+            combinaison[i] = couleursPions[rand.nextInt(0,manche.getPartie().getNbPionsTotal())];
         }
         manche.setCombinaisonSecrete(combinaison);
     }
