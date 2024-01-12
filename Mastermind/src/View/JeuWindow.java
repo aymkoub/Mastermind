@@ -336,7 +336,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
                         labelIndiceList.add((JLabel) cpn);
                     }
                 }
-                labelIndiceList.getFirst().setText(String.valueOf(trouve));
+                labelIndiceList.get(0).setText(String.valueOf(trouve));
                 labelIndiceList.get(1).setText(String.valueOf(malPlacer));
             }
         }
@@ -376,7 +376,7 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
             Titre.setText("Perdu");
         }
 
-        JLabel Score = new JLabel(STR."Votre score : \{jeu.getScore()}");
+        JLabel Score = new JLabel("Votre score : {jeu.getScore()}");
         panel.add(Score);
         panel.add(Titre);
         JButton Menu = new JButton("Menu");
