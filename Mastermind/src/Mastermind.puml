@@ -15,6 +15,7 @@ package Controller{
         + setNbPionsCombi(nbPionsCombi : Integer)
         + setNbPionsTotal(nbPionsTotal : Integer)
         + setNbTentatives(nbTentatives : Integer)
+        + setScore()
     }
 
     class MancheController
@@ -125,14 +126,21 @@ package Model{
 package View{
     class JeuWindow extends JFrame implements Model.JeuObserver{
         - jeu : Jeu
-        - jeuController : JeuController
+        - controller : JeuController {readOnly}
+        - manche : Manche
+        - mancheController : MancheController
+        - couleurTemp : Color
         - nbTentativeEffectuer : Integer
+        - nbMancheJouer
         + JeuWindow(jeu : Jeu, jeuController : JeuController)
         + Menu()
         + Option()
         + game()
         + Update()
         + ValiderTentative(Container Mainpanel)
+        + StopManche()
+        + Fin()
+        + Relancer()
     }
 
     class JeuTextuelle implements Model.JeuObserver

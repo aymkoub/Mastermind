@@ -41,4 +41,5 @@ public class JeuController {
     }
 
     public void setModeJeu(String md){this.jeu.setModeJeu( md);}
+    public void setScore(int score){jeu.setScore(score);}
 }

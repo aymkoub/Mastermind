@@ -47,7 +47,7 @@ public class MancheController {
 
     public void calculerScoreManche(Tentative tentative)
     {
-        int score = manche.getNbTentativesRestantes()*(tentative.getNbVrais()*3 + tentative.getNbFaux() + tentative.getNbAbs());
+        int score = (tentative.getNbVrais()*3 + tentative.getNbAbs());
 
 
         // si on est en mode classique, on ajoute 4 points au score
