@@ -15,13 +15,31 @@ public class JeuController {
         this.jeu = jeu1;
     }
 
-
     public void run()
     {
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < jeu.getNbManches(); i++)
         {
-            Manche manche = new Manche();
+            Manche manche = new Manche(this.jeu);
             MancheController mancheController = new MancheController(manche);
         }
     }
+
+    public void setNbManches(int nbManches) {
+        this.jeu.setNbManches( nbManches);
+    }
+
+    public void setNbPionsCombi(int nbPionsCombi) {
+        this.jeu.setNbPionsCombi(nbPionsCombi);
+    }
+
+    public void setNbPionsTotal(int nbPionsTotal) {
+        this.jeu.setNbPionsTotal( nbPionsTotal);
+    }
+
+    public void setNbTentatives(int nbTentatives) {
+        this.jeu.setNbTentatives(nbTentatives);
+    }
+
+    public void setModeJeu(String md){this.jeu.setModeJeu( md);}
+    public void setScore(int score){jeu.setScore(score);}
 }
