@@ -33,19 +33,24 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
 
     public void Menu()
     {
+        // Placement des boutons sur l'interface graphique
+
         this.getContentPane().removeAll();
         this.validate();
         this.repaint();
         setSize(600, 600);
+
+        // Bouton Start qui appelle la méthode game() une fois cliqué
         JButton start = new JButton("Start");
         start.addActionListener( actionEvent -> game());
         start.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
+        // Bouton Option qui appelle la méthode option() une fois cliqué
         JButton option = new JButton("Options");
         option.addActionListener(actionEvent -> Option());
         option.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Bouton Quitter qui ferme la fenêtre une fois cliqué
         JButton quitter = new JButton("Quitter le Jeu");
         quitter.addActionListener(actionEvent -> System.exit(0));
         quitter.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -71,6 +76,8 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
 
     public void Option()
     {
+        // Ouvre la fenêtre des options de la partie
+
         setSize(700,700);
         this.getContentPane().removeAll();
         this.validate();
@@ -134,6 +141,8 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
     private MancheController mancheController;
     public void game()
     {
+        //Lance la partie
+
         this.manche = new Manche(jeu);
         this.nbMancheJouer++;
         this.mancheController = new MancheController(manche);
@@ -356,6 +365,8 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
 
     public void Fin()
     {
+        // Affiche la fenêtre de fin avec le résultat de la partie
+
         setSize(700,700);
         this.getContentPane().removeAll();
         this.validate();
@@ -396,6 +407,8 @@ public class JeuWindow extends JFrame implements Model.JeuObserver  {
 
     public void FinMache()
     {
+        // Affiche la combinaison secrète et le nombre de points gagnés à l'issue de la manche
+
         setSize(700,700);
         this.getContentPane().removeAll();
         this.validate();
